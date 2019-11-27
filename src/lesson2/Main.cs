@@ -1,16 +1,21 @@
 using System;
+using System.Threading.Tasks;
 
-namespace Concept.Property.Lesson2 {
+namespace Concept.Lambda.Lesson2 {
     class Main {
         public void Run() {
-            var h = new Human("NAME");
-            Console.WriteLine($"{h.Name}");
+            var task = Run0();
+            task.Wait();
         }
-    }
-    class Human {
-        private string name;
-        public string Name { get => name;
-            private set => name = value; }
-        public Human(string name) => Name = name;
+        private async Task Run0() {
+            Func<Task> act = async () => {
+                int wait = 2000;
+                Console.WriteLine($"{wait}ミリ秒待機中……");
+//                await Task.Delay(wait);
+                await Task.Delay(wait).ConfigureAwait(false);
+                Console.WriteLine($"非同期ラムダ式。（文）");
+            };
+            await act();
+        }
     }
 }
